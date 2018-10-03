@@ -101,3 +101,22 @@ si se toma el cubo del valor de coincidencia directa entonces es posible definir
 
  Por el momento deberia alcanzar con el cubo
 '''
+
+### 20181003-1800
+
+Prepare el codigo para que se puedan generar varias intenciones. Aún es muy basico y rudimentario, pero lo importante es que es capaz de diferenciar las intenciones con un algoritmo simple de cantidad.
+
+Obviamente faltan realizar muchas cosas más referente tanto a la arquitectura de datos, usabilidad, como a los algoritmos de los motores, division de clases y modulos... aún así es un gran progreso. Un progreso que no pude conseguir utilizando el chatterbot.
+
+Por el momento las intenciones responden solo a tres casos:
+
+* que es arduino
+* donde comprar arduino
+* que versiones existen de arduino
+
+> me acabo de dar cuenta que no contemple los pluraes... quizas eso se pueda simplificar lemanizando¿?
+
+En cualquier caso, la respuesta del programa presenta una salida de debbug que muestra la estructura reconocida del mensaje y el indice de similitud para cada intención. Luego muestra la salida.
+
+Los valores mostrados para los indices de similitud son significativamente diferentes [1.0,0.3,0.6]. Esto depende directamente de la diferencia entre palabras que componen la frase de entrada (frase de activación) de cada intención. En todos los casos encontramos arduino, sin embargo palabras como es solo estan en la primer intención y palabras como comprar y existen en sus intenciones respectivas. Esto significa que el bot operara mucho mejor mientras las intenciones se encuentren bien diferenciadas y posean un mayor contenido. Pero, este contenido se traduce en frases largas que el usuario debe ingresar, cosa que incluso yo no haría.
+
