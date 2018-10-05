@@ -1,43 +1,7 @@
 # -*- coding: utf-8 -*-
 import nltk
 from nltk.corpus import stopwords
-
-class CIntent:
-    def __init__(self,inputs,outputs):
-        self.tokensInputs = []
-        self.tokensOutputs = []
-        self.requiredEntities = []
-
-        self.inputs = inputs.copy()
-        self.outputs = outputs.copy()
-        self.normalizeInputs()
-        self.normalizeOutputs()
-
-    def normalizeInputs(self):
-        temp = []
-        for i in self.inputs:
-            i = i.lower()
-            temp.append(i)
-            temp.append('¿'+i+'?')
-            temp.append(i+'?')
-        self.inputs.clear()
-        self.inputs.extend(temp)
-    
-    def normalizeOutputs(self):
-        temp = []
-        for o in self.outputs:
-            o = o.lower()
-            temp.append(o)
-        self.outputs.clear()
-        self.outputs.extend(temp)
-    
-    def indexSimilarity(self, tokens):
-        lenTokens = len(tokens)
-        lenTokensSimilar = 0
-        for tt in tokens:
-            if tt in self.tokensInputs:
-                lenTokensSimilar = lenTokensSimilar + 1
-        return lenTokensSimilar/lenTokens
+from intent import Intent
 
 intents = []
 inputs = [
@@ -49,8 +13,7 @@ inputs = [
 outputs = [
     'Arduino es una plataforma de hardware libre, basada en una placa con un microcontrolador y un entorno de desarrollo (software), diseñada para facilitar el uso de la electrónica en proyectos multidisciplinares. Arduino es una plataforma abierta que facilita la programación de un microcontrolador.'
 ]
-intents.append(CIntent(inputs,outputs))
-
+intents.append(Intent([inputs,outputs]))
 inputs = [
     'donde compro un arduino',
     'como consigo un arduino',
@@ -64,9 +27,7 @@ inputs = [
 outputs = [
     'Se puede comprar arduino en tiendas de electronica que vendan componentes e instrumentación de electrónica. Tambien es posible comprar por internet. La oferta es variada y suele haber un sitio donde los precios son suficientemente economicos como para tenerlos en cuenta.'
 ]
-
-intents.append(CIntent(inputs,outputs))
-
+intents.append(Intent([inputs, outputs]))
 inputs = [
     'Cuantas versiones de arduino hay',
     'cuales son las versiones de arduino',
@@ -79,35 +40,16 @@ inputs = [
 outputs = [
     'Arduino dispone de una gran familia de versiones. Año tras año se desarrollan nuevas versiones que implementan mejoras en los modelos ya existentes y se diseñan nuevos arduinos con funcionalidades interesantes. En la web de arduino existe todo un catalogo sobre los modelos. Tambien existen los arduino fork, que son generalmente de producción china y de bajo costo'
 ]
-
-intents.append(CIntent(inputs, outputs))
-
-tokens = []
-for it in intents:
-    print("INTENT with "+str(len(it.inputs))+" inputs", end="")
-    for inp in it.inputs:
-        sent = nltk.sent_tokenize(inp,'spanish')
-        tokens = nltk.word_tokenize(inp, 'spanish')
-        if (len(sent) > 1):
-            sw = stopwords.words('spanish')
-            for token in tokens:
-                if token in sw:
-                    tokens.remove(token)
-        for token in tokens:
-            if token not in it.tokensInputs:
-                it.tokensInputs.append(token)
-
-    print("TOKENS "+str(it.tokensInputs))
-
+intents.append(Intent([inputs, outputs]))
 print("---CHAT BEGIN---")
-text = input('>>')
+text = input('human>> ')
 while text != "bye":
     text = text.lower()
-    sent = nltk.sent_tokenize(text, 'spanish')
+    sentences = nltk.sent_tokenize(text, 'spanish')
     tokens = nltk.word_tokenize(text, 'spanish')
-    print("  "+str(len(sent))+" oraciones")
-    print("  tokens>>"+str(tokens))
-    if (len(sent) > 1):
+    print("body>>tokens "+str(tokens))
+    if (len(sentences) > 1):
+        print("body>>mas de una oracion")
         sw = stopwords.words('spanish')
         for token in tokens:
             if token in sw:
@@ -120,12 +62,12 @@ while text != "bye":
         print("    intencion: "+str(e[0])+" index: "+str(e[1]))
         return e[1]
     potencials.sort(reverse=True,key=m)
+
     if potencials[0][1]>0.5:
         print("ivy>> "+intents[ potencials[0][0] ].outputs[0])
     else:
         print("ivy>> No comprendo podría preguntar nuevamente")
-    text = input('>>')
-
+    text = input('human>> ')
 print("---chat end---")
 
 if __name__ == "__main__":

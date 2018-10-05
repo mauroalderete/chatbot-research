@@ -120,3 +120,20 @@ En cualquier caso, la respuesta del programa presenta una salida de debbug que m
 
 Los valores mostrados para los indices de similitud son significativamente diferentes [1.0,0.3,0.6]. Esto depende directamente de la diferencia entre palabras que componen la frase de entrada (frase de activación) de cada intención. En todos los casos encontramos arduino, sin embargo palabras como es solo estan en la primer intención y palabras como comprar y existen en sus intenciones respectivas. Esto significa que el bot operara mucho mejor mientras las intenciones se encuentren bien diferenciadas y posean un mayor contenido. Pero, este contenido se traduce en frases largas que el usuario debe ingresar, cosa que incluso yo no haría.
 
+### 20181005-0130
+
+Traslade la clase de intenciones a su propio modulo. Tambien cree un metodo para que aprenda y carge los inputs y outputs necesarios. De esta forma al crear una clase sería posible pasarle las listas de inputs y outputs inmediatamente, luego procede a normalizarlas y extraer los tokens necesarios.
+
+Al final lo unico que queda por realizar cada vez que el usuario ingresa una entrada es procesarla y consultar con el metodo indexSimilarity para extraer el indice de similaridad.
+
+Realice una prueba y note que sería posible, en caso de incertidumbre, brindar sugerencias de temas. Esto nuevamente requiere de memoria, pero al mismo tiempo requiere de la articulación predefinida de esa sugerencia. Por ejemplo ivy podría decir: *usted desea saber donde comprar un arduino?* cuando el indice de incertidumbre no es suficiente para destacar una sentencia. 
+
+Otras variantes sobre ese metodo podrían ser:
+
+* Sugerir mas de una posible intención
+* En caso de que halla seleccionado la intención, almacenar la entrada como un nuevo input (tokenizandola como toda entrada).
+* Asignar a la nueva entrada un indice de probabilidad. En la medida en que vuelva a citar tokens que se encuentran en la nueva entrada y no esten en las siguientes, y la intención haya sido evaluada correctamente esta probabilidad aumentaria. Se logra un refuerzo de un nuevo conocimiento.
+
+Voy a añadir algunas intenciones más. Por el momento no actualize el metodo para generar las intenciones y las respuestas. Debo investigar los formatos preexistentes. Quizas utilize un json o el simple yml, aunque este ultimo no le veo capacidad para discriminar entradas. Otra posibilidad seria una  o pequeña base de datos litesql o quizas una base de documentos tipo la de google, con lo que luego deberia ser más facil migrar.
+
+Otras cosas que quisiera ir explorando son el uso del script como un servidor y la creación de una GUI con python. En el caso de la primera quizas sea un programa cliente de la base de datos de google que esta atenta a nuevas solicitudes.
