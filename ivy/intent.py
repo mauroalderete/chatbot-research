@@ -63,10 +63,8 @@ class Intent():
                     self.tokensInputs.append(token)
     
     def indexSimilarity(self, tokens):
-        print("similarity")
         lenTokens = len(tokens)
         lenTokensSimilar = 0
-        print("tokensIntent "+str(self.tokensInputs))
         for tt in tokens:
             if tt in self.tokensInputs:
                 lenTokensSimilar = lenTokensSimilar + 1

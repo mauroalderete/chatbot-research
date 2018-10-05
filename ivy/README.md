@@ -137,3 +137,18 @@ Otras variantes sobre ese metodo podrían ser:
 Voy a añadir algunas intenciones más. Por el momento no actualize el metodo para generar las intenciones y las respuestas. Debo investigar los formatos preexistentes. Quizas utilize un json o el simple yml, aunque este ultimo no le veo capacidad para discriminar entradas. Otra posibilidad seria una  o pequeña base de datos litesql o quizas una base de documentos tipo la de google, con lo que luego deberia ser más facil migrar.
 
 Otras cosas que quisiera ir explorando son el uso del script como un servidor y la creación de una GUI con python. En el caso de la primera quizas sea un programa cliente de la base de datos de google que esta atenta a nuevas solicitudes.
+
+### 20181005-215
+
+Agrege unos intents, trate de ser variado y sobre cada variación ofrecer dos o tres intents similares. Los resultados son bastante interesantes. Nuevamente surge la necesidad de encontrar una tecnica para la resolución de incertidumbre.
+
+Incertidumbre en dos sentidos, tanto cuando los indices de similitud son muy bajos, como cuando existen muchos candidatos posibles.
+
+Otro incidente que observe es que hay terminos que se aplican mucho, como pueden ser "Arduino"... Esto me hace pensar, que sucederia si niego ese termino en todos los intents... la performance se mantiene? Y si lo niego solo en algunos?
+
+Algunas estrategias para resolver la incertidumbre donde existen muchos candidatos puede ser:
+
+* tokenizar la salida y revisar las coincidencias desde allí.
+* Descartar aquellos intents que fueron consultados recientemente. Se podría colocar un indice de intent ejecutado, de manera tal que cuando exista una colisión de candidatura, los que tengan mayor indice de ejecución reciente deberían ser menos probable que se ejecute nuevamente. Dicho indice podría disminuir con cada intent que no es el suyo, por tiempo real u otro factor.
+
+Esto significa que mucho del codigo del motor de selección se trataría de diversos indices probabilisticos. Sería interesante verlo como un sistema de calificación con ELO. Algo así como un ELO para cada entrada X. Al final de cuenta se trata de evaluar que intención es la mejor para satisfacer una entrada.
