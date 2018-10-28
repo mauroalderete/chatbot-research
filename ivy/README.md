@@ -152,3 +152,15 @@ Algunas estrategias para resolver la incertidumbre donde existen muchos candidat
 * Descartar aquellos intents que fueron consultados recientemente. Se podría colocar un indice de intent ejecutado, de manera tal que cuando exista una colisión de candidatura, los que tengan mayor indice de ejecución reciente deberían ser menos probable que se ejecute nuevamente. Dicho indice podría disminuir con cada intent que no es el suyo, por tiempo real u otro factor.
 
 Esto significa que mucho del codigo del motor de selección se trataría de diversos indices probabilisticos. Sería interesante verlo como un sistema de calificación con ELO. Algo así como un ELO para cada entrada X. Al final de cuenta se trata de evaluar que intención es la mejor para satisfacer una entrada.
+
+### 20181027-2200
+
+Realizando una revisión de las notas pienso algunas alternatvas para seguir trabajando el codigo:
+* Variar el objetivo del chatbot a uno orientado a la asistencia
+* Cuando se genera una incertidumbre de una intención, la misma intención almacena la forma gramatical para sugerir su entrada
+* Las entradas del usuario pueden ser almacenados y relacionados con la intención dada.
+> Esto plantea dos situaciones. Por un lado no hay una forma certera de asegurar que la intención seleccionada responda correctamente a la entrada dada por el usuario, por lo que la relación puede ser equivocada. Fenonemo que sucede en el chatterbot. Por el contrario, cuando existe una situación de incertidumbre y el bot responde con una sugerencia de intención que luego el usuario confirma, se obtiene un feedback positivo que permite relacionar fuertemente la entrada dada originalmente con la intención ejecutada. En este caso se podría tratar de tokenizar la entrada para reforzar el indice de similiridad.
+* Las conversaciones pueden responder a una maquina oculta, HHM. Sin embargo existen complicaciones para definir fronteras, es decir, para determinar cuando entra en una HHM correspondiente a una serie de intenciones, cuando debe finalizarla, o cuando debe pausarlas y retomarlas. Al mismo tiempo requiere de un variables de estado que sean capaces de manejar los distintos hilos de conversasion.
+* La primer función buscada del asistente debe ser el de agenda. Deberá ser capaz de almacenar recordatorios con fechas, horas, repitencia, pero tambien con metodos más relativos que respondan a frases como "más tarde", "en un rato", "por la noche", "despues de <acción>"
+
+Por otra parte voy a preparar un fork del proyecto en la forma tal y como esta hasta el momento para el un curso de robotica. El fork consistira en un chatbot conversacional abierto que se conectara a un robot con arduino por medio de la comunicación en serie y respondera utilizando un display LCD.
