@@ -9,6 +9,8 @@ class Intent():
         self.requiredEntities = []
         self.inputs = []
         self.outputs = []
+        self.emotions = []
+        self.checksum = ""
 
         if (len(prhases)>0):
             self.loadIntent(prhases[0],prhases[1])
@@ -43,14 +45,14 @@ class Intent():
         self.outputs.extend(temp)
 
     def learnIntent(self):
-        print("learnIntent")
+        #print("learnIntent")
         for inp in self.inputs:
             sentences = nltk.sent_tokenize(inp, 'spanish')
             tokenInput = nltk.word_tokenize(inp, 'spanish')
-            print("["+inp+"]"+str(len(sentences))+"sentences")
-            print("    "+str(self.tokensInputs))
+            #print("["+inp+"]"+str(len(sentences))+"sentences")
+            #print("    "+str(self.tokensInputs))
             if (len(sentences) > 1):
-                print("    clean stopwords")
+                #print("    clean stopwords")
                 sw = stopwords.words('spanish')
                 '''
                 que sucede si en la lista de tokens hay mas de un stopword

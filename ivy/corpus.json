@@ -1,0 +1,19 @@
+{
+    "Intents": [
+        {
+            "inputs": [
+                "que es arduino",
+                "arduino, que es",
+                "arduino que es",
+                "arduinos"
+            ],
+            "outputs": [
+                "Arduino es una plataforma de hardware libre, basada en una placa con un microcontrolador y un entorno de desarrollo (software), diseñada para facilitar el uso de la electrónica en proyectos multidisciplinares. Arduino es una plataforma abierta que facilita la programación de un microcontrolador."
+            ],
+            "emotions": [],
+            "checksum": "ab7f074e062cf1935d6e7edcd7f158bb",
+            "tokensInputs": ["que", "es", "arduino",","],
+            "tokensOutputs": []
+        }
+    ]
+}

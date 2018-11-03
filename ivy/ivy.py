@@ -1,7 +1,23 @@
 # -*- coding: utf-8 -*-
+import logging
+
 import nltk
 from nltk.corpus import stopwords
 from intent import Intent
+
+import output
+import intentManager
+
+logging.basicConfig(level=logging.DEBUG)
+#preparo y configuro los diferentes trhead de mensajes
+out = output.Output()
+out.loadOuput(output.standarOutput())
+out.loadOuput(output.serialOutput(port="COM6", baudrate=9600))
+out.write("Hola mundo")
+
+imanager = intentManager.IntentManager()
+
+imanager.loadIntents()
 
 intents = []
 intents.append(Intent([[

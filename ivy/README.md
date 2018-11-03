@@ -164,3 +164,20 @@ Realizando una revisión de las notas pienso algunas alternatvas para seguir tra
 * La primer función buscada del asistente debe ser el de agenda. Deberá ser capaz de almacenar recordatorios con fechas, horas, repitencia, pero tambien con metodos más relativos que respondan a frases como "más tarde", "en un rato", "por la noche", "despues de <acción>"
 
 Por otra parte voy a preparar un fork del proyecto en la forma tal y como esta hasta el momento para el un curso de robotica. El fork consistira en un chatbot conversacional abierto que se conectara a un robot con arduino por medio de la comunicación en serie y respondera utilizando un display LCD.
+
+### 20181101-2300
+
+Comence a realizar algunas de las modificaciones anunciadas.
+* Trabaje sobre los sistemas de salidas.
+* Intento construir un formato json para almacenar las intenciones y los tokens
+* Preparo el codigo pensando en el taller
+
+Cree unas clases que permiten seleccionar las distintas fuentes de salida del mensaje del chatbot. Por el momento solo hay dos, la salida por pantalla estandar y la salida por puerto serial, que aun falta probar. La idea es implementar mas tipos de salidas para conexiones a base de datos, aplicaciones blutooth, etc...
+Las salidas implementan una interface que luego es heredada por las salidas estandar. Aplicando polimorfismo sobre un administrador de salidas, este ejecuta los metodos estandar de cada clase de salida en particular
+Esta forma de estructurar los sistemas de salidas, es extensible tanto en horizontal como en vertical.
+
+Algo similar quize implementar con las intenciones. Una clase de intensiones y otra para administrarlas.
+
+Por otro lado cree un archivo JSON para estructurar los datos de las intenciones y los tokens. Una clave checksum para verificar si es necesaria una actualización de los tokens o se pueden usar los que ya estan disponibles.
+
+Al final, cuando se realiza toda la carga, el sistema tokeniza lo que es necesario y deja todo listo para analizar las frases. En este punto se puede realizar una actualización del corpus. Sin embargo, esto genera complicaciones con las codificaciones de caracteres.
