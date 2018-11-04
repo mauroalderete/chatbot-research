@@ -5,13 +5,12 @@ import logging
 import nltk
 from nltk.corpus import stopwords
 import intent
-h="hola múndo como ñ"
-print(h)
-print(h.encode("utf-8"))
-print(h.encode("latin-1"))
-print(h.encode("unicode"))
 class IntentManager():
     def __init__(self,prhases=[]):
+        self.__NO_SAVE = 0
+        self.__SAVE_ALL = 1
+        self.__SAVE_ONLY_CHANGES = 2
+
         self.tokensInputs = []
         self.tokensOutputs = []
         self.requiredEntities = []
@@ -20,51 +19,98 @@ class IntentManager():
         
         self.intents = []
 
-        #if (len(prhases)>0):
-          #  self.loadIntents(prhases[0],prhases[1])
-    
-    def loadIntents(self, corpusfile="corpus.json"):
+        self.corpusFile = "corpus.json"
 
-        self.corpusFile = corpusfile
-        #chequar excepciones de archivo
-        self.file = open(corpusfile,"r")
-        self.dataFile = self.file.read()
+    @property
+    def NO_SAVE(self):
+        return self.__NO_SAVE
+    @property
+    def SAVE_ALL(self):
+        return self.__SAVE_ALL
+
+    @property
+    def SAVE_ONLY_CHANGES(self):
+        return self.__SAVE_ONLY_CHANGES
+    
+    def loadCorpus(self,
+    corpusFile="corpus.json",
+    ignore_modified_intents=False,
+    ignore_new_intents=False,
+    ignore_learned_intents=False):
+        #corpusFile: ubicación y nombre del archivo que contiene el corpus
+        #ignore_modified_intents: ignorar del corpus los intents modificados, si vale false los incorpora y los aprende
+        #ignore_new_intents: ignorar del corpus los intentes nuevos, si vale false los incporora y los aprende
+        #ignore_learned_intents: ignorar del corpus los intents que no requieren aprendizaje
+        logging.debug("LOADINTENTS")
+        
+        self.corpusFile = corpusFile
+        try:
+            self.file = open(self.corpusFile,"r", encoding="utf-8")
+        except FileNotFoundError:
+            logging.critical("Archivo de Corpus no encontrado. Se cancela la carga de corpus")
+            return None #generar excepcion
+
+        try:
+            self.dataFile = self.file.read()
+        except FileNotFoundError:
+            logging.critical("No se puede leer el Archivo de Corpus. Se cancela la carga de corpus")
+            return None  # generar excepcion
+
         self.file.close()
         self.corpusData = json.loads(self.dataFile)
-        print(str(self.corpusData))
-        ii=0
+        intentsLoaded = 0
         for i in self.corpusData["Intents"]:
-            print(">>intent ["+str(ii)+"]")
+            loadIntent = True
             new = intent.Intent()
-            new.inputs = i["inputs"]
-            new.outputs = i["outputs"]
-            new.emotions = i["emotions"]
-            chkText = ''.join(new.inputs) + ''.join(new.outputs)
-            checksum = hashlib.md5(chkText.encode('utf-8')).hexdigest()
             if "checksum" in i.keys():
+                new.inputs = i["inputs"]
+                new.outputs = i["outputs"]
+                new.emotions = i["emotions"]
+                chkText = ''.join(new.inputs) + ''.join(new.outputs)+''.join(new.emotions)
+                checksum = hashlib.md5(chkText.encode('utf-8')).hexdigest()
+            
                 if checksum == i["checksum"]:
-                    print("no aprender. cargando tokens")
-                    new.checksum = i["checksum"]
-                    new.tokensInputs = i["tokensInputs"]
-                    new.tokensOutputs = i["tokensOutputs"]
+                    if ignore_learned_intents is False:
+                        logging.debug("Loading learned intent")
+                        new.checksum = i["checksum"]
+                        new.tokensInputs = i["tokensInputs"]
+                        new.tokensOutputs = i["tokensOutputs"]
+                        new.learningState = new.LEARNED_INTENT
+                    else:
+                        logging.debug("Ignoring learned intent")
+                        loadIntent = False
                 else:
-                    print("corpus modificado. aprendiendo")
-                    new.learnIntent()
-                    new.checksum = checksum
+                    if ignore_modified_intents is False:
+                        logging.debug("Loading modified intent")
+                        new.learningState = new.MODIFIED_INTENT
+                        new.checksum = checksum
+                    else:
+                        logging.debug("Ignoring modified intent")
+                        loadIntent = False
             else:
-                print("corpus nuevo. aprendiendo")
-                new.learnIntent()
-                new.checksum = checksum
+                if ignore_new_intents is False:
+                    logging.debug("Loading new intent")
+                    new.learningState = new.NEW_INTENT
+                    new.checksum = checksum
+                else:
+                    logging.debug("Ignoring new intent")
+                    loadIntent = False
+            if loadIntent:
+                self.intents.append( new ) #chequear que realice una copia
+                intentsLoaded = intentsLoaded + 1
+        return intentsLoaded
 
-            self.intents.append( new ) #chequear que realice una copia
-        #en este punto se han generado todos los aprendizajes necesarios.
-        #y se generaron los checksum pertinentes
-        #seria posible actualizar el corpus
-        self.updateCorpus()
+    def learnCorpus(self, force_learning=False):
+        #force_learning: ejecuta el aprendizaje para todos los intents
+        logging.debug("+++++LEARNCORPUS")
+        for i in self.intents:
+            if i.learningState!=i.LEARNED_INTENT or ( i.learningState==i.LEARNED_INTENT and force_learning ):
+                i.normalizeInputs()
+                i.normalizeOutputs()
+                i.learnIntent()
         
     def updateCorpus(self):
         logging.debug("updateCorpus run")
-        ii = 0
         data = {"Intents": [] }
         for i in self.intents:
             data["Intents"].append( {
@@ -75,54 +121,10 @@ class IntentManager():
                 "tokensInputs": i.tokensInputs,
                 "tokensOutputs": i.tokensOutputs
             } )
-            print(str(data["Intents"][ len(data["Intents"])-1 ]))
-            #creo un objeto con la clave "Intents" realizo una copia simbolica de la lista self.intents y genero el json
-            #luego grabo el json
-            print("updateCorpus JSON::")
-            print(json.dumps(data).encode("latin-1"))
-
-    def normalizeInputs(self):
-        temp = []
-        for i in self.inputs:
-            i = i.lower()
-            temp.append(i)
-            temp.append('¿'+i+'?')
-            temp.append(i+'?')
-        self.inputs.clear()
-        self.inputs.extend(temp)
-    
-    def normalizeOutputs(self):
-        temp = []
-        for o in self.outputs:
-            o = o.lower()
-            temp.append(o)
-        self.outputs.clear()
-        self.outputs.extend(temp)
-
-    def learnIntent(self):
-        print("learnIntent")
-        for inp in self.inputs:
-            sentences = nltk.sent_tokenize(inp, 'spanish')
-            tokenInput = nltk.word_tokenize(inp, 'spanish')
-            print("["+inp+"]"+str(len(sentences))+"sentences")
-            print("    "+str(self.tokensInputs))
-            if (len(sentences) > 1):
-                print("    clean stopwords")
-                sw = stopwords.words('spanish')
-                '''
-                que sucede si en la lista de tokens hay mas de un stopword
-                '''
-                for token in self.tokensInputs:
-                    if token in sw:
-                        tokenInput.remove(token)
-            for token in tokenInput:
-                if token not in self.tokensInputs:
-                    self.tokensInputs.append(token)
-    
-    def indexSimilarity(self, tokens):
-        lenTokens = len(tokens)
-        lenTokensSimilar = 0
-        for tt in tokens:
-            if tt in self.tokensInputs:
-                lenTokensSimilar = lenTokensSimilar + 1
-        return lenTokensSimilar/lenTokens
+        logging.debug("JSON dump::")
+        a=json.dumps(data, indent=4, sort_keys=True, ensure_ascii=False)
+        logging.debug("Corpus Save")
+        logging.debug(a)
+        #chequar excepciones de archivo
+        self.file = open(self.corpusFile, "w", encoding="utf-8")
+        self.file.write(a)

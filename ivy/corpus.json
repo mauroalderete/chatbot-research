@@ -1,18 +1,302 @@
 {
     "Intents": [
         {
+            "checksum": "5ae739446cd507c7bdea48025ea0042f",
+            "emotions": [],
             "inputs": [
                 "que es arduino",
+                "¿que es arduino?",
+                "que es arduino?",
                 "arduino, que es",
+                "¿arduino, que es?",
+                "arduino, que es?",
                 "arduino que es",
-                "arduinos"
+                "¿arduino que es?",
+                "arduino que es?",
+                "arduinos",
+                "¿arduinos?",
+                "arduinos?"
             ],
             "outputs": [
-                "Arduino es una plataforma de hardware libre, basada en una placa con un microcontrolador y un entorno de desarrollo (software), diseñada para facilitar el uso de la electrónica en proyectos multidisciplinares. Arduino es una plataforma abierta que facilita la programación de un microcontrolador."
+                "arduino es una plataforma de hardware libre, basada en una placa con un microcontrolador y un entorno de desarrollo (software), diseñada para facilitar el uso de la electrónica en proyectos multidisciplinares. arduino es una plataforma abierta que facilita la programación de un microcontrolador."
             ],
+            "tokensInputs": [
+                "que",
+                "es",
+                "arduino",
+                "¿que",
+                "?",
+                ",",
+                "¿arduino",
+                "arduinos",
+                "¿arduinos"
+            ],
+            "tokensOutputs": []
+        },
+        {
+            "checksum": "1c0d703cb1b516a0096f893f9317f2df",
             "emotions": [],
-            "checksum": "ab7f074e062cf1935d6e7edcd7f158bb",
-            "tokensInputs": ["que", "es", "arduino",","],
+            "inputs": [
+                "que sabes sobre arduino",
+                "que conoces sobre arduino",
+                "sabes cosas de arduino",
+                "sabes de arduino",
+                "conoces el arduino",
+                "que conoces de arduino",
+                "que sabes de arduino"
+            ],
+            "outputs": [
+                "se muchas cosas de arduino. como se programa, que se usa para programar, donde comprar, que versiones hay"
+            ],
+            "tokensInputs": [
+                "que",
+                "sabes",
+                "sobre",
+                "arduino",
+                "conoces",
+                "cosas",
+                "de",
+                "el"
+            ],
+            "tokensOutputs": []
+        },
+        {
+            "checksum": "a6f3f98b52e3457fefc9705be77a0f22",
+            "emotions": [],
+            "inputs": [
+                "que sabes sobre arduino uno",
+                "que conoces sobre arduino uno",
+                "sabes cosas de arduino uno",
+                "sabes de arduino uno",
+                "conoces el arduino uno",
+                "que conoces de arduino uno",
+                "que sabes de arduino uno",
+                "que es arduino uno"
+            ],
+            "outputs": [
+                "arduino uno, es la plataforma de excelencia para iniciarse en el mundo de arduino y el desarrollo de las nuevas tecnologias. si recien empezas a conocer sobre este facinante mundo no dudes en empezar con un arduino uno."
+            ],
+            "tokensInputs": [
+                "que",
+                "sabes",
+                "sobre",
+                "arduino",
+                "uno",
+                "conoces",
+                "cosas",
+                "de",
+                "el",
+                "es"
+            ],
+            "tokensOutputs": []
+        },
+        {
+            "checksum": "2d5d16534227cd0b4f78da8e41046a4c",
+            "emotions": [],
+            "inputs": [
+                "hola",
+                "buenos dias",
+                "buenos días",
+                "que tal",
+                "que onda",
+                "todo bien"
+            ],
+            "outputs": [
+                "hola, en que puedo ayudarte?"
+            ],
+            "tokensInputs": [
+                "hola",
+                "buenos",
+                "dias",
+                "días",
+                "que",
+                "tal",
+                "onda",
+                "todo",
+                "bien"
+            ],
+            "tokensOutputs": []
+        },
+        {
+            "checksum": "703c6f9f66aab32ce58384e798964fb2",
+            "emotions": [],
+            "inputs": [
+                "sos un robot",
+                "sos un chatbot",
+                "quien sos",
+                "que sos",
+                "sos humano",
+                "como te llamas",
+                "cual es tu nombre"
+            ],
+            "outputs": [
+                "soy ivy, un prototipo de ia conversacional creado para hablar sobre arduino y ayudarte a resolver tus dudas"
+            ],
+            "tokensInputs": [
+                "sos",
+                "un",
+                "robot",
+                "chatbot",
+                "quien",
+                "que",
+                "humano",
+                "como",
+                "te",
+                "llamas",
+                "cual",
+                "es",
+                "tu",
+                "nombre"
+            ],
+            "tokensOutputs": []
+        },
+        {
+            "checksum": "8fb9d0cc438afa14460a5ff3048e4b3b",
+            "emotions": [],
+            "inputs": [
+                "como se programa arduino",
+                "como se programa una placa arduino",
+                "como se programan los arduinos"
+            ],
+            "outputs": [
+                "para programar una placa arduino se necesita un editor de codigo. el más popular es el arduino ide creado por las mismas personas que crearon el arduino. pero tambien es posible utilizar otros entornos, aunque no te lo recomendaría si es que recien estas empezando."
+            ],
+            "tokensInputs": [
+                "como",
+                "se",
+                "programa",
+                "arduino",
+                "una",
+                "placa",
+                "programan",
+                "los",
+                "arduinos"
+            ],
+            "tokensOutputs": []
+        },
+        {
+            "checksum": "6edc93ab9fb52718b8569ba08f7df362",
+            "emotions": [],
+            "inputs": [
+                "en que lenguaje se programa arduino",
+                "que lenguajes se pueden usar para programar arduino",
+                "que lenguaje de programación funciona con arduino",
+                "que lenguaje de programación se usa para arduino"
+            ],
+            "outputs": [
+                "para programar arduino suele usarse el lenguaje de programación c/c++. existen otras alternativas, algunas más desarrolladas que otras. pero c/c++ sigue siendo el estandar más popular. de hecho, la mayoría de las librearias estan escritos en este lenguaje"
+            ],
+            "tokensInputs": [
+                "en",
+                "que",
+                "lenguaje",
+                "se",
+                "programa",
+                "arduino",
+                "lenguajes",
+                "pueden",
+                "usar",
+                "para",
+                "programar",
+                "de",
+                "programación",
+                "funciona",
+                "con",
+                "usa"
+            ],
+            "tokensOutputs": []
+        },
+        {
+            "checksum": "331a596682e7d23d5562a8530e32f906",
+            "emotions": [],
+            "inputs": [
+                "para que sirve el arduino",
+                "para que sirve arduino",
+                "para que sirve la placa arduino",
+                "de que sirve arduino",
+                "de que sirve la placa arduino"
+            ],
+            "outputs": [
+                "arduino es una plataforma que tiene muchos propositos. fue diseñada en principio para impulsar la internet de las cosas, pero en poco tiempo se popularizo en educación. actualmente miles de personas utilizan arduino en diferentes proyectos, muchos para aprender programación y electronica, y muchos otros para construir sus propia tecnología y ayudar a que su entorno sea un lugar mejor."
+            ],
+            "tokensInputs": [
+                "para",
+                "que",
+                "sirve",
+                "el",
+                "arduino",
+                "la",
+                "placa",
+                "de"
+            ],
+            "tokensOutputs": []
+        },
+        {
+            "checksum": "4326d5a7b3175599df30f1944f0d5dd3",
+            "emotions": [],
+            "inputs": [
+                "donde compro un arduino",
+                "como consigo un arduino",
+                "como compro un arduino",
+                "donde puedo comprar un arduino",
+                "donde compro arduino",
+                "como consigo arduino",
+                "como compro arduino",
+                "donde puedo comprar arduino",
+                "donde venden arduinos",
+                "donde venden la placa arduino",
+                "donde los venden",
+                "donde venden los arduinos"
+            ],
+            "outputs": [
+                "se puede comprar arduino en tiendas de electronica que vendan componentes e instrumentación de electrónica. tambien es posible comprar por internet. la oferta es variada y suele haber un sitio donde los precios son suficientemente economicos como para tenerlos en cuenta."
+            ],
+            "tokensInputs": [
+                "donde",
+                "compro",
+                "un",
+                "arduino",
+                "como",
+                "consigo",
+                "puedo",
+                "comprar",
+                "venden",
+                "arduinos",
+                "la",
+                "placa",
+                "los"
+            ],
+            "tokensOutputs": []
+        },
+        {
+            "checksum": "ed6a8437495f2acddfc4d88f898eb99e",
+            "emotions": [],
+            "inputs": [
+                "cuantas versiones de arduino hay",
+                "cuales son las versiones de arduino",
+                "arduino tiene versiones",
+                "que versiones de arduino hay",
+                "que versiones de arduino existen",
+                "cuantas versiones de arduino existen",
+                "existen muchas versiones de arduino"
+            ],
+            "outputs": [
+                "arduino dispone de una gran familia de versiones. año tras año se desarrollan nuevas versiones que implementan mejoras en los modelos ya existentes y se diseñan nuevos arduinos con funcionalidades interesantes. en la web de arduino existe todo un catalogo sobre los modelos. tambien existen los arduino fork, que son generalmente de producción china y de bajo costo"
+            ],
+            "tokensInputs": [
+                "cuantas",
+                "versiones",
+                "de",
+                "arduino",
+                "hay",
+                "cuales",
+                "son",
+                "las",
+                "tiene",
+                "que",
+                "existen",
+                "muchas"
+            ],
             "tokensOutputs": []
         }
     ]

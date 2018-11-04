@@ -1,142 +1,48 @@
 # -*- coding: utf-8 -*-
+import sys
 import logging
 
 import nltk
 from nltk.corpus import stopwords
-from intent import Intent
+from colorama import init
+from colorama import Fore
+from colorama import Back
+from colorama import Style
 
+from intent import Intent
 import output
 import intentManager
 
-logging.basicConfig(level=logging.DEBUG)
-#preparo y configuro los diferentes trhead de mensajes
-out = output.Output()
-out.loadOuput(output.standarOutput())
-out.loadOuput(output.serialOutput(port="COM6", baudrate=9600))
-out.write("Hola mundo")
+init()
 
-imanager = intentManager.IntentManager()
+logging.basicConfig(level=logging.INFO) #modos: DEBUG INFO WARNING ERROR CRITICAL
+#preparo y configuro los diferentes sistemas de salidas que se utilizaran
+outputs = output.Output()
+outputs.loadOuput(output.standarOutput())
+outputs.loadOuput(output.serialOutput(port="COM6", baudrate=9600))
+#preparo y configuro los diferentes sistemas de entrada que se utilizaran
 
-imanager.loadIntents()
+#preparo y cargo las intenciones desde el corpus
+intents = intentManager.IntentManager()
+### añadir las opciones para realizar o no aprendizaje normal
+# forzar el aprendizaje de todo el corpus
+# ignorar intents modificados
+# guardar cambios en el corpus
+# forzar cambio completo en el corpus
+a = 0
+a = intents.loadCorpus()
+if a>0:
+    logging.info(str(a)+" intenciones cargadas")
+    intents.learnCorpus()
+    #ADVERTENCIA: SOLO USAR CUANDO SE CARGA EL CORPUS COMPLETO, de otra forma se sobreescribira todo el corpus y solo grabara los intents cargados
+    #intents.updateCorpus()
+else:
+    sys.exit("Ocurrio un error al cargar el corpus")
 
-intents = []
-intents.append(Intent([[
-    'que es arduino',
-    'arduino, que es',
-    'arduino que es',
-    'arduino',
-],
-    [
-    'Arduino es una plataforma de hardware libre, basada en una placa con un microcontrolador y un entorno de desarrollo (software), diseñada para facilitar el uso de la electrónica en proyectos multidisciplinares. Arduino es una plataforma abierta que facilita la programación de un microcontrolador.'
-]]))
-intents.append(Intent([[
-    'que sabes sobre arduino',
-    'que conoces sobre arduino',
-    'sabes cosas de arduino',
-    'sabes de arduino',
-    'conoces el arduino',
-    'que conoces de arduino',
-    'que sabes de arduino',
-],
-    [
-    'Se muchas cosas de arduino. Como se programa, que se usa para programar, donde comprar, que versiones hay'
-]]))
-intents.append(Intent([[
-    'que sabes sobre arduino uno',
-    'que conoces sobre arduino uno',
-    'sabes cosas de arduino uno',
-    'sabes de arduino uno',
-    'conoces el arduino uno',
-    'que conoces de arduino uno',
-    'que sabes de arduino uno',
-    'que es arduino uno',
-],
-    [
-    'Arduino UNO, es la plataforma de excelencia para iniciarse en el mundo de Arduino y el desarrollo de las nuevas tecnologias. Si recien empezas a conocer sobre este facinante mundo no dudes en empezar con un Arduino UNO.'
-]]))
-intents.append(Intent([[
-    'hola',
-    'buenos dias',
-    'buenos días',
-    'que tal',
-    'que onda',
-    'todo bien'
-],
-    [
-    'hola, en que puedo ayudarte?'
-]]))
-intents.append(Intent([[
-    'sos un robot',
-    'sos un chatbot',
-    'quien sos',
-    'que sos',
-    'sos humano',
-    'como te llamas'
-    'cual es tu nombre'
-],
-    [
-    'Soy Ivy, un prototipo de IA conversacional creado para hablar sobre arduino y ayudarte a resolver tus dudas'
-]]))
-intents.append(Intent([[
-    'como se programa arduino',
-    'como se programa una placa arduino',
-    'como se programan los arduinos',
-],
-    [
-    'Para programar una placa arduino se necesita un editor de codigo. El más popular es el Arduino IDE creado por las mismas personas que crearon el Arduino. Pero tambien es posible utilizar otros entornos, aunque no te lo recomendaría si es que recien estas empezando.'
-]]))
-intents.append(Intent([[
-    'en que lenguaje se programa arduino',
-    'que lenguajes se pueden usar para programar arduino',
-    'que lenguaje de programación funciona con arduino',
-    'que lenguaje de programación se usa para arduino',
-],
-    [
-    'Para programar Arduino suele usarse el lenguaje de programación C/C++. Existen otras alternativas, algunas más desarrolladas que otras. Pero C/C++ sigue siendo el estandar más popular. De hecho, la mayoría de las librearias estan escritos en este lenguaje'
-]]))
-intents.append(Intent([[
-    'para que sirve el arduino',
-    'para que sirve arduino',
-    'para que sirve la placa arduino',
-    'de que sirve arduino',
-    'de que sirve la placa arduino'
-],
-    [
-    'Arduino es una plataforma que tiene muchos propositos. Fue diseñada en principio para impulsar la Internet de Las Cosas, pero en poco tiempo se popularizo en educación. Actualmente miles de personas utilizan Arduino en diferentes proyectos, muchos para aprender programación y electronica, y muchos otros para construir sus propia tecnología y ayudar a que su entorno sea un lugar mejor.'
-]]))
-intents.append(Intent([[
-    'donde compro un arduino',
-    'como consigo un arduino',
-    'como compro un arduino',
-    'donde puedo comprar un arduino',
-    'donde compro arduino',
-    'como consigo arduino',
-    'como compro arduino',
-    'donde puedo comprar arduino',
-    'donde venden arduinos',
-    'donde venden la placa arduino',
-    'donde los venden',
-    'donde venden los arduinos',
-], [
-    'Se puede comprar arduino en tiendas de electronica que vendan componentes e instrumentación de electrónica. Tambien es posible comprar por internet. La oferta es variada y suele haber un sitio donde los precios son suficientemente economicos como para tenerlos en cuenta.'
-]]))
-intents.append(Intent([[
-    'Cuantas versiones de arduino hay',
-    'cuales son las versiones de arduino',
-    'arduino tiene versiones',
-    'que versiones de arduino hay',
-    'que versiones de arduino existen',
-    'cuantas versiones de arduino existen',
-    'existen muchas versiones de arduino'
-],[
-    'Arduino dispone de una gran familia de versiones. Año tras año se desarrollan nuevas versiones que implementan mejoras en los modelos ya existentes y se diseñan nuevos arduinos con funcionalidades interesantes. En la web de arduino existe todo un catalogo sobre los modelos. Tambien existen los arduino fork, que son generalmente de producción china y de bajo costo'
-]]))
-
-'''
-*********************************************************************************
-'''
 print("---CHAT BEGIN---")
-text = input('human>> ')
+
+print(f'{Back.BLUE}{Fore.WHITE}Human >>{Style.RESET_ALL} ',end="")
+text = input()
 while text != "bye":
     text = text.lower()
     sentences = nltk.sent_tokenize(text, 'spanish')
@@ -148,19 +54,42 @@ while text != "bye":
                 tokens.remove(token)
 
     potencials = []
-    for it in range(len(intents)):
-        potencials.append([it,intents[it].indexSimilarity(tokens)])
+    for it in range(len(intents.intents)):
+        similarity = intents.intents[it].indexSimilarity(tokens)
+        if similarity>0:
+            potencials.append([it,similarity])
+
     def m(e):
-        print("    intencion: "+str(e[0])+" index: "+str(e[1]))
         return e[1]
     potencials.sort(reverse=True,key=m)
 
-    if potencials[0][1]>0.5:
-        print("ivy>> "+intents[ potencials[0][0] ].outputs[0])
+    if logging.getLogger().getEffectiveLevel()<=logging.INFO:
+        print("      Escaneando respuestas posibles...")
+        for p in potencials:
+            if p[1]==1:
+                print(f"      {Fore.GREEN}["+str(p[0])+"] "+str(p[1]) +" => " + intents.intents[p[0]].inputs[0]+f"{Style.RESET_ALL}")
+            elif p[1] >=0.75:
+                print(f"      {Fore.YELLOW}["+str(p[0])+"] "+str(p[1]) +
+                            " => " + intents.intents[p[0]].inputs[0]+f"{Style.RESET_ALL}")
+            elif p[1] >= 0.5:
+                print(f"      {Fore.MAGENTA}["+str(p[0])+"] "+str(p[1]) +
+                            " => " + intents.intents[p[0]].inputs[0]+f"{Style.RESET_ALL}")
+            else:
+                print(f"      {Fore.RED}["+str(p[0])+"] "+str(p[1]) +
+                            " => " + intents.intents[p[0]].inputs[0]+f"{Style.RESET_ALL}")
+
+    print(f'{Back.GREEN}{Fore.WHITE}Ivy >>{Style.RESET_ALL}{Fore.GREEN} ', end="")
+    if len(potencials)>0:
+        if potencials[0][1]>=0.5:
+            print(intents.intents[ potencials[0][0] ].outputs[0])
+        else:
+            print("Perdon, no entiendo tu pregunta. Podrías intentarlo de nuevo preguntando de otra forma por favor?")
     else:
-        print("ivy>> Perdon, no entiendo tu pregunta. Podrías intentarlo de nuevo preguntando de otra forma por favor?")
-    text = input('human>> ')
-print("---chat end---")
+        print("Perdon, no entiendo tu pregunta. Podrías intentarlo de nuevo preguntando de otra forma por favor?")
+    
+    print(f'{Back.BLUE}{Fore.WHITE}Human >>{Style.RESET_ALL} ', end="")
+    text = input()
+print("---CHAT END---")
 
 if __name__ == "__main__":
     print("Ejecutado como Main")

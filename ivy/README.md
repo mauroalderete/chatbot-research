@@ -165,7 +165,7 @@ Realizando una revisión de las notas pienso algunas alternatvas para seguir tra
 
 Por otra parte voy a preparar un fork del proyecto en la forma tal y como esta hasta el momento para el un curso de robotica. El fork consistira en un chatbot conversacional abierto que se conectara a un robot con arduino por medio de la comunicación en serie y respondera utilizando un display LCD.
 
-### 20181101-2300
+### 20181102-2300
 
 Comence a realizar algunas de las modificaciones anunciadas.
 * Trabaje sobre los sistemas de salidas.
@@ -181,3 +181,25 @@ Algo similar quize implementar con las intenciones. Una clase de intensiones y o
 Por otro lado cree un archivo JSON para estructurar los datos de las intenciones y los tokens. Una clave checksum para verificar si es necesaria una actualización de los tokens o se pueden usar los que ya estan disponibles.
 
 Al final, cuando se realiza toda la carga, el sistema tokeniza lo que es necesario y deja todo listo para analizar las frases. En este punto se puede realizar una actualización del corpus. Sin embargo, esto genera complicaciones con las codificaciones de caracteres.
+
+### 20181104-1930
+
+Emprolije varias partes del codigo. Termine de implementar el manejador del archivo JSON en una forma sencilla. Resolvi el problema con las codificaciones de caracteres.
+
+Dividi las tareas de las clases de intenciones y de la clase que las administra. Mejora la forma en que se pueden cargar las intenciones del corpus añadiendo nuevas opciones, como las de ignorar determinadas clases de intenciones.
+
+Quize implementar un sistema similar para grabar las intenciones pero deberia ampliar mucho mas el algoritmo de grabación del corpus en texto plano debido a que por el momento sobreescribe el archivo completo. Por esta razon no es recomendable ejecutar la actualización del corpus si no se sabe bien que se esta haciendo.
+
+Trate de mejorar el uso de las excepciones para las funciones estandar pero al parecer no son suficientes. Mas adelante tendre que encontrar la forma de implementar las propias excepciones para mantener un codigo mucho mas prolijo.
+
+De modo similar intente utilizar constantes personalizadas para cada clase, de manera similar a como hace pyserial con sus parametros pyserial.PARITY pero creo que no lo estoy haciendo bien. Debere en algun momento rebizar el codigo fuente de pyserial para encontrar lo que necesito ya que o estoy haciendo mal las preguntas o no es un tema relevante en google.
+
+Por otro lado mejore la interface de la consola para obtener una salida mucho mas llamativa utilizando colores. Esta caracteristica luego deberia ser liberada utilizando las clases de salidas y sus manejadores.
+
+Falta implementar un sistema similar al de las salidas y las intenciones para las diferentes formas en que se puede ingresar una frase de una conversación
+
+Una vez que tenga esto terminado voy a comensar a crear un corpus mas entretenido para el curso de robotica y chequear la implementación con el puerto serie y un arduino con LCD.
+
+Más adelante continuare con diferentes formas de estructurar la función de emparejamiento o similiridad. Y repensar una forma de estructurar el sistema para incluir intenciones con conversasiones guiadas para lograr dos cosas:
+* intenciones directas, como ADIOS => terminar programa
+* intenciones con recuperacion de entidades como: recordame en un rato que ...
