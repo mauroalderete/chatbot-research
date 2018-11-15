@@ -37,6 +37,18 @@ class IntentManager():
     ignore_modified_intents=False,
     ignore_new_intents=False,
     ignore_learned_intents=False):
+        """Carga el archivo de datos del corpus que debe manejar el chatbot
+        
+        Keyword Arguments:
+            corpusFile {str} -- Ruta y nombre del archivo json que contiene el corpus (default: {"corpus.json"})
+            ignore_modified_intents {bool} -- Si se debe ignorar los intents que se encuentran modificados (default: {False})
+            ignore_new_intents {bool} -- Ignora los intents añadidos recientemente (default: {False})
+            ignore_learned_intents {bool} -- Ignora los intents que ya fueron parseados (default: {False})
+        
+        Returns:
+            integer -- Retorna la cantidad de intents cargados
+        """
+
         #corpusFile: ubicación y nombre del archivo que contiene el corpus
         #ignore_modified_intents: ignorar del corpus los intents modificados, si vale false los incorpora y los aprende
         #ignore_new_intents: ignorar del corpus los intentes nuevos, si vale false los incporora y los aprende
@@ -48,13 +60,14 @@ class IntentManager():
             self.file = open(self.corpusFile,"r", encoding="utf-8")
         except FileNotFoundError:
             logging.critical("Archivo de Corpus no encontrado. Se cancela la carga de corpus")
-            return None #generar excepcion
+            logging.info("path: "+self.corpusFile)
+            return -1 #generar excepcion
 
         try:
             self.dataFile = self.file.read()
         except FileNotFoundError:
             logging.critical("No se puede leer el Archivo de Corpus. Se cancela la carga de corpus")
-            return None  # generar excepcion
+            return -1  # generar excepcion
 
         self.file.close()
         self.corpusData = json.loads(self.dataFile)

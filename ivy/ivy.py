@@ -10,10 +10,12 @@ from colorama import Back
 from colorama import Style
 
 from intent import Intent
-import output
+import outputManager from outputs
 import intentManager
 
 init()
+
+DATAPATH = "/home/mauro/Proyectos/Chatbot/ivy/"
 
 logging.basicConfig(level=logging.INFO) #modos: DEBUG INFO WARNING ERROR CRITICAL
 #preparo y configuro los diferentes sistemas de salidas que se utilizaran
@@ -30,11 +32,11 @@ intents = intentManager.IntentManager()
 # guardar cambios en el corpus
 # forzar cambio completo en el corpus
 a = 0
-a = intents.loadCorpus()
+a = intents.loadCorpus(DATAPATH+"corpus.json")
 if a>0:
     logging.info(str(a)+" intenciones cargadas")
     intents.learnCorpus()
-    #ADVERTENCIA: SOLO USAR CUANDO SE CARGA EL CORPUS COMPLETO, de otra forma se sobreescribira todo el corpus y solo grabara los intents cargados
+    #!ADVERTENCIA: SOLO USAR CUANDO SE CARGA EL CORPUS COMPLETO, de otra forma se sobreescribira todo el corpus y solo grabara los intents cargados
     #intents.updateCorpus()
 else:
     sys.exit("Ocurrio un error al cargar el corpus")

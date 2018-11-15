@@ -1,14 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import serial
-
-class OutputInterface():
-    success = False
-    enable = False
-    def __init__(self, prhases=[]):
-        logging.warning("__init__ not implemented yet")
-    def write(self):
-        logging.warning("write not implemented yet")
+from outputInterface import OutputInterface
 
 class serialOutput(OutputInterface):
     def __init__(self, port="COM6", baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,  \
@@ -35,28 +28,3 @@ class serialOutput(OutputInterface):
                     self.port.write(str(msg))
                 except serial.SerialException:
                     logging.error("serialOuput "+str(self.port.port)+" no se puede enviar mensage")
-
-class standarOutput(OutputInterface):
-    def __init__(self,header="Sending::",footer=""):
-        logging.debug("__init__ consola")
-        self.header = header
-        self. footer = footer
-        self.success=True
-        self.enable=True
-    def write(self,msg):
-        logging.debug("write consola")
-        print(str(self.header)+str(msg)+str(self.footer))
-
-class Output( OutputInterface ):
-    outs = []
-    def __init__(self):
-        logging.debug("__init__ Administrador de Salidas")
-    def loadOuput(self, outp ):
-        logging.debug("__init__ Cargando una nueva salida")
-        self.outs.append( outp )
-    def write(self,msg):
-        logging.debug("Escribiendo en las salidas")
-        for o in self.outs:
-            if o.success:
-                if o.enable:
-                    o.write(msg)
